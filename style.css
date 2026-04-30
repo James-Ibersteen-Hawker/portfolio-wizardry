@@ -2,7 +2,7 @@
     background: blue;
 }
 ._back_ {
-    background: red;
+    background: url("grunge.avif");
     display: inline-block;
     margin: 10px;
     padding: 5px;
