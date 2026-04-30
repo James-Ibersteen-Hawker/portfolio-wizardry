@@ -1,10 +1,10 @@
 function init() {
     const arr = Array.from(document.querySelectorAll(".flags"));
     arr.forEach(e => {
-        flags(e, 230, 40, 10, 0.7);
+        flags(e, 300, 40, 10, 0.7, 5);
     })
 }
-async function flags(e = null, p = 150, rY = 40, h = 20, d = 0.8) {
+async function flags(e = null, p = 150, rY = 40, h = 20, d = 0.8, t = 3) {
     if (!e) return;
     const { SHOW_TEXT, FILTER_ACCEPT, FILTER_REJECT } = NodeFilter;
     const walker = document.createTreeWalker(e, SHOW_TEXT, {
@@ -50,9 +50,10 @@ async function flags(e = null, p = 150, rY = 40, h = 20, d = 0.8) {
             if (background.includes("url")) {
                 const img = background.match(/url\(["']?(.*?)["']?\)/)[1];
                 const avg = await avgImg(img);
+                boxShadowRule = `box-shadow: ${-1 - r * t}px 0px 0px rgb(${avg.map(e => e * d).join(",")});`
             } else if (background.includes("rgb")) {
                 const color = background.match(/\(([^)]+)\)/)[1].split(", ");
-                boxShadowRule = `box-shadow: ${-1 - r * 3}px 0px 0px rgb(${color.map(e => e * d).join(",")});`
+                boxShadowRule = `box-shadow: ${-1 - r * t}px 0px 0px rgb(${color.map(e => e * d).join(",")});`
             }
             box.setAttribute("style", `
                 z-index: ${cnt - i - 1};
@@ -66,7 +67,6 @@ async function flags(e = null, p = 150, rY = 40, h = 20, d = 0.8) {
 function avgImg(img) {
     return new Promise((resolve, reject) => {
         try {
-            alert(img)
             const canvas = document.createElement("canvas");
             canvas.height = 16;
             canvas.width = 16;
@@ -74,12 +74,21 @@ function avgImg(img) {
             const placedImg = new Image();
             placedImg.src = img;
             placedImg.onload = function () {
-                ctx.drawImage(placedImg, 0,0, 16, 16);
-                const data = ctx.getImageData(0,0,16,16).data;
-                const average = [100, 100, 100];
-                resolve(average);
+                ctx.drawImage(placedImg, 0, 0, 16, 16);
+                const data = ctx.getImageData(0, 0, 16, 16).data;
+                const colors = [];
+                for (let i = 0; i < data.length; i += 3) {
+                    const [r, g, b] = data.slice(i, i + 3);
+                    colors.push([r, g, b]);
+                }
+                const avg = colors.reduce((acc, [r = 0, g = 0, b = 0]) => {
+                    acc[0] = Number(acc[0]) + Number(r);
+                    acc[1] = Number(acc[1]) + Number(g);
+                    acc[2] = Number(acc[2]) + Number(b);
+                    return acc;
+                }, [[0], [0], [0]]).map(e => Math.round(e / colors.length))
+                resolve(avg);
             }
-            // ctx.
         } catch (e) {
             reject(e);
         }
