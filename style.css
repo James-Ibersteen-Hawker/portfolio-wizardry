@@ -61,8 +61,8 @@
   background: linear-gradient(to right, rgb(173, 173, 173), black 80%);
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M50 0 C0 33.3 100 66.6 50 100' fill='none' stroke='white' stroke-width='10' stroke-linecap='square'/%3E%3C/svg%3E");
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M50 0 C0 33.3 100 66.6 50 100' fill='none' stroke='white' stroke-width='10' stroke-linecap='square'/%3E%3C/svg%3E");
-  -webkit-mask-size: 100% 50px;
-  mask-size: 100% 50px;
+  -webkit-mask-size: 100% 40px;
+  mask-size: 100% 40px;
   -webkit-mask-repeat: repeat-y;
   mask-repeat: repeat-y;
   mask-position: bottom;
@@ -77,25 +77,34 @@
   list-style-type: none;
   display: flex;
   flex-direction: column;
+  position: relative;
+  padding: 0 0 30px 0;
+}
+.signpost-nav ul::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 100%;
+  background: linear-gradient(to right, rgb(54, 24, 7), rgb(121, 56, 22), rgb(54, 24, 7));
 }
 .link {
-  background: greenyellow;
   width: fit-content;
   position: relative;
   margin-top: 5px;
   margin-bottom: 5px;
-}
-.link:nth-child(even) {
-  padding: 10px 30px 10px 50px;
-  clip-path: polygon(
-    0% 0%,
-    calc(100% - 20px) 0%,
-    100% 50%,
-    calc(100% - 20px) 100%,
-    0% 100%
-  );
+  font-size: 30px;
+  max-width: 300px;
+  transition: 0.5s;
 }
 .link:nth-child(odd) {
+  text-align: right;
+  background: linear-gradient(to left, rgb(174, 174, 174), gray);
+  left: 50%;
+  transform-origin: calc(100% - 25px);
+  transform: translateX(calc(-100% + 25px)) perspective(400px) rotateY(-30deg);
   padding: 10px 50px 10px 30px;
   clip-path: polygon(
     100% 0%,
@@ -105,13 +114,35 @@
     100% 100%
   );
 }
+.link:nth-child(even) {
+  background: linear-gradient(to right, rgb(174, 174, 174), gray);
+  left: 50%;
+  transform-origin: 25px;
+  transform: translateX(-25px) perspective(400px) rotateY(30deg);
+  padding: 10px 30px 10px 50px;
+  clip-path: polygon(
+    0% 0%,
+    calc(100% - 20px) 0%,
+    100% 50%,
+    calc(100% - 20px) 100%,
+    0% 100%
+  );
+}
+.link:nth-child(even):hover {
+  transform: translateX(-25px) perspective(400px) rotateY(0);
+  max-width: 300px;
+}
+.link:nth-child(odd):hover {
+  transform: translateX(calc(-100% + 25px)) perspective(400px) rotateY(0);
+  max-width: 300px;
+}
 .link::after {
   position: absolute;
   content: "";
   width: 10px;
   height: 10px;
   border-radius: 100%;
-  transform: translate(-50%, -50%);
+  top: 50%;
   background: radial-gradient(
     silver 0% 15%,
     rgb(189, 107, 52) 15%,
@@ -120,6 +151,10 @@
   );
 }
 .link:nth-child(even)::after {
-  top: 50%;
+  transform: translate(-50%, -50%);
   left: 25px;
+}
+.link:nth-child(odd)::after {
+  transform: translate(50%, -50%);
+  right: 25px;
 }
