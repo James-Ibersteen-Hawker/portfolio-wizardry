@@ -1,7 +1,7 @@
 function init() {
     const arr = Array.from(document.querySelectorAll(".flags"));
     arr.forEach(e => {
-        flags(e, 300, 40, 10, 0.7, 5);
+        flags(e, 300, 40, 10, 0.3, 5);
     })
 }
 async function flags(e = null, p = 150, rY = 40, h = 20, d = 0.8, t = 3) {
@@ -18,6 +18,7 @@ async function flags(e = null, p = 150, rY = 40, h = 20, d = 0.8, t = 3) {
         rows.push([])
         const txt = cur.textContent.trim().split(" ");
         txt.forEach(t => {
+            if (t === "") return;
             const [box, wire] = [create("div"), create("div")];
             box.classList.add("_back_");
             wire.classList.add("_wire_");
