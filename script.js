@@ -1,7 +1,7 @@
 function init() {
     const arr = Array.from(document.querySelectorAll(".flags"));
     arr.forEach(e => {
-        flags(e, 300, 40, 10, 0.3, 5);
+        flags(e, 300, 40, 10, 0.3, 3);
     })
 }
 async function flags(e = null, p = 150, rY = 40, h = 20, d = 0.8, t = 3) {
@@ -47,20 +47,19 @@ async function flags(e = null, p = 150, rY = 40, h = 20, d = 0.8, t = 3) {
             const r = Math.floor(Math.random() * 3) - 1;
             const styles = window.getComputedStyle(box);
             const background = styles.getPropertyValue("background");
-            let boxShadowRule = "";
             if (background.includes("url")) {
                 const img = background.match(/url\(["']?(.*?)["']?\)/)[1];
                 const avg = await avgImg(img);
-                boxShadowRule = `box-shadow: ${-1 - r * t}px 0px 0px rgb(${avg.map(e => e * d).join(",")});`
+                box.style.setProperty("--side-color", avg.map(e => e * d).join(","));
             } else if (background.includes("rgb")) {
                 const color = background.match(/\(([^)]+)\)/)[1].split(", ");
-                boxShadowRule = `box-shadow: ${-1 - r * t}px 0px 0px rgb(${color.map(e => e * d).join(",")});`
+                box.style.setProperty("--side-color", color.map(e => e * d).join(","));
             }
-            box.setAttribute("style", `
-                z-index: ${cnt - i - 1};
-                transform: perspective(${p}px) rotateY(${rY * r + 10}deg) translateY(-${h * Math.max(r, 0)}%);
-                ${boxShadowRule}`
-            );
+            Object.assign(box.style, {
+                zIndex: cnt - i - 1,
+                transform: `perspective(${p}px) rotateY(${rY * r + 10}deg) translateY(-${h * Math.max(r, 0)}%)`,
+                boxShadow: `${-1 - r * t}px 0px 0px rgb(var(--side-color))`
+            });
             wire.setAttribute("style", `height: ${cTop - pTop}px;`);
         })
     })
@@ -78,7 +77,7 @@ function avgImg(img) {
                 ctx.drawImage(placedImg, 0, 0, 16, 16);
                 const data = ctx.getImageData(0, 0, 16, 16).data;
                 const colors = [];
-                for (let i = 0; i < data.length; i += 3) {
+                for (let i = 0; i < data.length; i += 4) {
                     const [r, g, b] = data.slice(i, i + 3);
                     colors.push([r, g, b]);
                 }
