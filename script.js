@@ -17,7 +17,7 @@ function flags(e = null, p = 150, rY = 40, h = 20) {
     const boxes = [];
     while ((cur = walker.nextNode())) {
         boxes.push([]);
-        const txt = cur.textContent.split(" ");
+        const txt = cur.textContent.trim().split(" ");
         txt.forEach(e => {
             const [box, wire] = [create("div"), create("div")];
             box.classList.add("_back_");
