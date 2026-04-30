@@ -6,6 +6,22 @@
 .flags {
   padding-bottom: 50px;
   overflow: hidden;
+  display: inline-block;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-top: 3px solid black;
+  position: relative;
+}
+.flags::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 15px;
+  top: 0px;
+  left: 0;
+  background: linear-gradient(to bottom, black, rgb(95, 37, 19) 60% 70%, rgb(171, 75, 46) 71% 85%, rgb(95, 37, 19) 90%);
+  z-index: 5;
 }
 ._back_ {
   background: url("wood.jpg");
@@ -13,7 +29,7 @@
   letter-spacing: 5px;
   background-size: 100% 100%;
   color: rgb(255, 180, 115);
-  font-size: 40px;
+  font-size: 50px;
   font-family: "Woodstamp", sans-serif;
   display: inline-block;
   margin: 10px;
