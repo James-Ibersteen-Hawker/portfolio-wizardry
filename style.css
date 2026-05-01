@@ -126,7 +126,7 @@
 }
 .link:nth-child(odd) {
   text-align: right;
-  background: linear-gradient(to left, rgb(174, 174, 174), gray);
+  background: linear-gradient(to left, rgb(88, 88, 88) 0 3px, rgb(174, 174, 174) 4px, gray);
   left: 50%;
   transform-origin: calc(100% - 25px);
   transform: translateX(calc(-100% + 25px)) perspective(400px) rotateY(-30deg);
@@ -140,7 +140,7 @@
   );
 }
 .link:nth-child(even) {
-  background: linear-gradient(to right, rgb(174, 174, 174), gray);
+  background: linear-gradient(to right, rgb(88,88,88) 0px 3px, rgb(174, 174, 174) 4px, gray);
   left: 50%;
   transform-origin: 25px;
   transform: translateX(-25px) perspective(400px) rotateY(30deg);
@@ -154,10 +154,12 @@
   );
 }
 .link:nth-child(even):hover {
+  background: linear-gradient(to right, rgb(174, 174, 174), gray);
   transform: translateX(-25px) perspective(400px) rotateY(0);
   max-width: 300px;
 }
 .link:nth-child(odd):hover {
+  background: linear-gradient(to left, rgb(174, 174, 174), gray);
   transform: translateX(calc(-100% + 25px)) perspective(400px) rotateY(0);
   max-width: 300px;
 }
