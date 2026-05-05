@@ -3,6 +3,12 @@ function init() {
     arr.forEach(e => {
         flags(e, 300, 40, 10, 0.3, 3);
     })
+    window.addEventListener("resize", () => {
+        arr.forEach(e => {
+            flags(e, 300, 40, 10, 0.3, 3);
+        })
+    })
+    window.addEventListener("mousemove", spotlight)
 }
 async function flags(e = null, p = 150, rY = 40, h = 20, d = 0.8, t = 3) {
     if (!e) return;
@@ -93,5 +99,10 @@ function avgImg(img) {
             reject(e);
         }
     })
+}
+function spotlight(e) {
+    const light = document.querySelector(".spotlight");
+    light.setAttribute("style", `background: 
+        radial-gradient(circle at ${e.clientX}px ${e.clientY}px, transparent 0% 200px, rgba(0,0,0,.5) 500px);`)
 }
 init();
